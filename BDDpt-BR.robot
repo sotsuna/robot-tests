@@ -1,11 +1,11 @@
 *** Keywords ***
-Dado ${Keyword}
-  Run Keyword   ${Keyword}
+Dado ${KEYWORD}
+  Run Keyword   ${KEYWORD}
 
 Quando ${KEYWORD}
   Run Keyword   ${KEYWORD}
 
-Então ${KEYWORD}
+Entao ${KEYWORD}
   Run Keyword    ${KEYWORD}
 
 E ${KEYWORD}

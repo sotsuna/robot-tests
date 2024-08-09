@@ -3,57 +3,58 @@ Library    SeleniumLibrary
 
 *** Variables ***
 ${BROWSER}              chrome
-${URL}                  https://robotizandotestes.blogspot.com.br/  
-${CABEÇALHO}            Header1
-${BOTAO_LUPA}           css=.search-expand.touch-icon-button    
-${CAMPO_PESQUISAR}      css=.search-input>input
-${BOTAO_PESQUISAR}      css=.search-action.flat-button
-${LINK_POST}            xpath=.//*[@id='Blog1']/div[1]/article/div/div/h3/a
-${TITULO}               xpath=.//*[@id='Blog1']/div/article/div[1]/div/h3
-
+${URL}                  https://demo.mksolutions.com.br/mk/login/?sys=MK0
+${USUARIO}              marco.kist
+${CAMPO_USUARIO}        xpath=/html/body/div[1]/div[2]/form/input[2]
+${SENHA}                Mart0123!
+${CAMPO_SENHA}          xpath=/html/body/div[1]/div[2]/form/input[3]
+${BOTAO_ENTRAR}         xpath=/html/body/div[1]/div[2]/form/button
+${FRAME_MAINSYSTEM}     mainsystem
+${FRAME_MAINFORM}       xpath=/html/body/iframe
+${CHECK_HOME}           css:white-space: nowrap; text-decoration: none; text-align: center; cursor: pointer; background-color: rgb(255, 255, 255);
+${BUTTON_WORKSPACE}     xpath=/html/body/form/div/div[3]/div[1]/div/ul/li[4]/a
+${CHECK_WORKSPACE}      xpath=/html/body/form/div/div[4]
+${FRAME_WORKSPACE}      name:URLFrame5275875
 *** Keywords ***
+
+#### CENARIO 01: Logar no sistema
 #### DADO
-Que esteja na tela HOME do blog robotizando testes
-    Acessar blog robotizandotestes
-
-Que esteja na tela de resultado da pesquisa pela postagem "${TITULO_POSTAGEM}" 
-    Verificar resultado da pesquisa   ${TITULO_POSTAGEM}
-
-#### QUANDO
-Pesquisar pela palavra "${BUSCA}"
-    Pesquisar a postagem pela palavra "${BUSCA}"
-
-Clicar no link da postagem
-    Clicar no post encontrado
-    
-#### ENTÃO
-A postagem "${TITULO_POSTAGEM}" deve ser listada no resultado da pesquisa
-    Verificar resultado da pesquisa   ${TITULO_POSTAGEM}
-
-A tela da postagem "${TITULO_POSTAGEM}" deve ser mostrada
-    Verificar tela da postagem  ${TITULO_POSTAGEM}
-
-#### PASSOS    
-Acessar blog robotizandotestes
+Que estou na tela de login
     Open Browser    ${URL}    ${BROWSER}
-    Wait Until Element Is Visible   ${CABEÇALHO}
-    Title Should Be     Robotizando Testes
-
-Pesquisar a postagem pela palavra "${BUSCA}"
-    Click Element   ${BOTAO_LUPA}
-    Input Text      ${CAMPO_PESQUISAR}    ${BUSCA}
-    Click Element   ${BOTAO_PESQUISAR}
-    Wait Until Element Is Visible   ${LINK_POST}
-
-Verificar resultado da pesquisa
-    [Arguments]    ${TITULO_POSTAGEM}
-    should be equal as strings    ${TITULO_POSTAGEM}    ${TITULO}
-Clicar no post encontrado
-    Click Element    ${LINK_POST}
-Verificar tela da postagem
-    [Arguments]   ${TITULO_POSTAGEM}    
-    Wait Until Element Is Visible  ${TITULO}
-    Element Text Should Be  ${TITULO}  ${TITULO_POSTAGEM}
-
+    Maximize Browser Window
+    Title Should Be    MK Solutions
+    Sleep    2s
+#### QUANDO
+Preencho o campo "Usuário" com "${USUARIO}"
+    Input Text    ${CAMPO_USUARIO}    ${USUARIO}
+#### E
+Preencho o campo "Senha" com "${SENHA}"
+    Input Text    ${CAMPO_SENHA}    ${SENHA}
+Clico no botão "Entrar"
+    Click Button    ${BOTAO_ENTRAR}
+#### ENTÃO
+Devo ver a tela inicial do sistema
+    Select Frame    ${FRAME_MAINSYSTEM}
+    Select Frame    ${FRAME_MAINFORM}
+    # Select Frame    ${FRAME_MAINFORM}
+    Element Should Be Visible    ${CHECK_HOME}
+    Sleep    2s
+# #### CENARIO 02: Entrar no submenu Workspace
+# #### DADO
+# Que estou na tela inicial do sistema
+#     Select Frame    ${FRAME_MAINSYSTEM}
+#     Select Frame    ${FRAME_MAINFORM}
+# #### QUANDO
+# Clico na moeda do submenu "Workspace"
+#     Click Element    ${BUTTON_WORKSPACE}
+# Espero a tela carregar
+#     Sleep    2s
+# #### ENTÃO
+# Devo ver a tela HOME do Workspace
+#     Select Frame    ${FRAME_MAINSYSTEM}
+#     Select Frame    ${FRAME_MAINFORM}
+#     Select Frame    ${FRAME_WORKSPACE}
+#     Select Frame    ${FRAME_MAINFORM}
+#     Element Should Be Visible    ${CHECK_WORKSPACE}
 Fechar Navegador
     Close All Browsers
